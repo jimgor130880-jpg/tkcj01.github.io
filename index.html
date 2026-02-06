@@ -241,7 +241,7 @@
             padding: 0 3px;
         }
         .prize-top { font-size: 12px; }
-        .prize-bottom { font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
+        .prize-bottom { font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
         /* 奖品内图片样式：适配格子大小，不拉伸 */
         .prize-img {
             width: 20px;
@@ -358,20 +358,20 @@
                     start: "Start",
                     shuffle: "Shuffle",
                     unknown: "?",
-                    prizePrefix: "", // 核心修改：移除Win前缀，设为空
+                    prizePrefix: "",
                     prize: {
-                        "100粉丝": "100 SEG",
-                        "1000粉丝": "1000 SEG",
-                        "5000粉丝": "5000 SEG",
-                        "10000粉丝": "10000 SEG",
-                        "100000粉丝": "100000 SEG"
+                        "100粉丝": "100 SEG a1.png",
+                        "1000粉丝": "1000 SEG a1.png",
+                        "5000粉丝": "5000 SEG a1.png",
+                        "10000粉丝": "10000 SEG a1.png",
+                        "100000粉丝": "100000 SEG a1.png"
                     },
                     tip: {
                         clearRecord: "✅ Winning record function has been removed!",
                         checkProb: "Probability verification completed! Please check console log (press F12 to open)",
                         probLog1: "Probability verification result (total ",
                         probLog2: " times):",
-                        probLog3: " SEG: ",
+                        probLog3: " SEG a1.png: ",
                         probLog4: " times ("
                     }
                 },
@@ -458,10 +458,8 @@
         function generatePrizeHtml(prizeId) {
             const prefix = CONFIG.lang[currentLang].prizePrefix;
             const name = getPrizeName(prizeId);
-            // 英文：仅展示SEG文字+a1.png；中/阿文：前缀+奖品名称，纯文字
-            const prizeContent = currentLang === 'en' 
-                ? `<span>${name}</span><img src="a1.png" alt="${name}" class="prize-img" onerror="this.style.display='none'">`
-                : name;
+            // 英文仅展示文字，中/阿文保留原样式
+            const prizeContent = name;
             return `
                 <div class="prize-text">
                     ${prefix ? `<span class="prize-top">${prefix}</span>` : ''}
