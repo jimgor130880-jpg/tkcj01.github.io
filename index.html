@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" dir="ltr">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,23 +13,19 @@
             position: relative;
             min-height: 100vh;
             box-sizing: border-box;
-            direction: ltr;
+            direction: ltr; /* 默认左到右，阿拉伯语动态切换 */
         }
+        /* 阿拉伯语适配 */
         body.ar {
             direction: rtl;
-            font-family: 'Arial', 'Tahoma', sans-serif;
+            font-family: 'Arial', 'Tahoma', sans-serif; /* 适配阿拉伯语字体 */
         }
+        /* 语言切换按钮样式 */
         .language-switcher {
             position: absolute;
             top: 10px;
             right: 10px;
             z-index: 100;
-            display: flex;
-            gap: 4px;
-        }
-        body.ar .language-switcher {
-            right: auto;
-            left: 10px;
         }
         .lang-btn {
             background-color: #FFC100;
@@ -37,11 +33,11 @@
             border: none;
             padding: 6px 12px;
             border-radius: 4px;
+            margin-left: 4px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
             font-size: 12px;
-            flex-shrink: 0;
         }
         .lang-btn:hover {
             background-color: #FFD700;
@@ -54,7 +50,7 @@
         .header {
             text-align: center;
             margin-bottom: 15px;
-            padding-top: 40px;
+            padding-top: 30px;
         }
         .title {
             background-color: #E62E2E;
@@ -72,7 +68,7 @@
             grid-template-rows: repeat(7, 50px);
             gap: 8px;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* 垂直居中，修复图片容器对齐 */
         }
         .grid-item {
             background-color: #E62E2E;
@@ -90,31 +86,14 @@
             box-sizing: border-box;
             text-align: center;
             width: 100%;
-            height: 100%;
-        }
-        /* 格子序号样式：左上角小数字，低调不突兀 */
-        .grid-item::before {
-            content: attr(data-num);
-            position: absolute;
-            top: 2px;
-            left: 4px;
-            font-size: 8px;
-            font-weight: bold;
-            color: #fff;
-            opacity: 0.8;
-            z-index: 5;
-            line-height: 1;
-        }
-        /* 阿拉伯语序号调整到右上角 */
-        body.ar .grid-item::before {
-            left: auto;
-            right: 4px;
+            height: 100%; /* 强制占满格子，修复尺寸不一致 */
         }
         .empty {
             background-color: transparent;
             width: 100%;
             height: 100%;
         }
+        /* 图片容器样式 - 修复布局，和格子尺寸一致 */
         .image-container {
             display: flex;
             align-items: center;
@@ -123,8 +102,8 @@
             height: 100%;
             border-radius: 4px;
             overflow: hidden;
-            grid-column: 2 / 3;
-            grid-row: 4 / 5;
+            grid-column: 2 / 3; /* 固定在第二列，防止位移 */
+            grid-row: 4 / 5;    /* 固定在第四行，防止位移 */
         }
         .image-container img {
             width: 100%;
@@ -136,13 +115,12 @@
             color: #000;
             font-size: 18px;
             font-weight: bold;
-            padding: 10px 70px;
+            padding: 8px 70px;
             border: none;
             border-radius: 4px;
-            margin-top: 20px;
+            margin-top: 15px;
             cursor: pointer;
             transition: all 0.2s;
-            touch-action: manipulation;
         }
         .start-btn:disabled {
             background-color: #999;
@@ -154,12 +132,9 @@
             background-color: #FFD700;
             transform: scale(1.02);
         }
-        .start-btn:active:not(:disabled) {
-            transform: scale(0.98);
-        }
         .btn-container {
             text-align: center;
-            padding-bottom: 20px;
+            margin-bottom: 20px; /* 底部留空，适配移动端 */
         }
         .icon {
             width: 15px;
@@ -167,26 +142,19 @@
             background-color: #FFC100;
             border-radius: 50% 50% 50% 0;
             position: absolute;
-            z-index: 5;
         }
         .icon-left { top: 120px; left: 10px; }
         .icon-right { top: 200px; right: 10px; }
-        body.ar .icon-left { left: auto; right: 10px; }
-        body.ar .icon-right { right: auto; left: 10px; }
         .star {
             color: #fff;
             position: absolute;
             font-size: 14px;
-            z-index: 5;
         }
         .star1 { top: 60px; left: 10px; }
         .star2 { bottom: 40px; right: 10px; }
         .star3 { bottom: 15px; left: 10px; }
         .star4 { right: 10px; top: 300px; }
-        body.ar .star1 { left: auto; right: 10px; }
-        body.ar .star2 { right: auto; left: 10px; }
-        body.ar .star3 { left: auto; right: 10px; }
-        body.ar .star4 { right: auto; left: 10px; }
+        /* 滚动高亮样式 */
         .grid-item.active {
             background-color: #FFD900;
             color: #E62E2E;
@@ -194,6 +162,7 @@
             box-shadow: 0 0 12px #FFD900;
             z-index: 10;
         }
+        /* 中奖高亮+闪烁样式（滚动停止后） */
         .grid-item.win {
             background-color: #FF0000;
             color: #FFFFFF;
@@ -201,6 +170,7 @@
             transform: scale(1.05);
             z-index: 20;
         }
+        /* 翻转后白底 + 无限持续闪烁 */
         .grid-item.flipped {
             background-color: #FFFFFF !important;
             font-weight: bold;
@@ -209,11 +179,13 @@
             z-index: 25;
             animation: flipFlash 1.2s ease-in-out infinite alternate;
         }
+        /* 不同奖品的文字颜色 */
         .color-black { color: #000000 !important; }
         .color-yellow { color: #FFD900 !important; }
         .color-orange { color: #FF7F00 !important; }
         .color-blue { color: #0066FF !important; }
         .color-red { color: #E62E2E !important; }
+        /* 洗牌展示奖品样式（无无限闪烁） */
         .grid-item.shuffle-show {
             background-color: #FFFFFF;
             font-weight: bold;
@@ -221,14 +193,17 @@
             transform: scale(1);
             z-index: 25;
         }
+        /* 滚动中奖闪烁动画 */
         @keyframes flashOnce {
             from { opacity: 1; transform: scale(1.05); }
             to { opacity: 0.5; transform: scale(1.12); }
         }
+        /* 翻转后永久持续闪烁动画 */
         @keyframes flipFlash {
             from { box-shadow: 0 0 8px #FFFFFF, 0 0 12px #E62E2E; opacity: 1; }
             to { box-shadow: 0 0 20px #FFFFFF, 0 0 30px #E62E2E; opacity: 0.95; }
         }
+        /* 中奖文字/图片组合样式 - 适配英文的图片+SEG排版 */
         .prize-text {
             font-size: 13px;
             line-height: 1.2;
@@ -236,27 +211,44 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1px;
+            gap: 2px;
             width: 100%;
             padding: 0 3px;
+            margin: 0;
         }
         .prize-top { font-size: 12px; }
-        .prize-bottom { font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-        /* 奖品内图片样式：适配格子大小，不拉伸 */
+        .prize-bottom { font-size: 14px; font-weight: bold; }
+        /* 英文奖品的a2.png图片样式 - 自适应小尺寸，不超出格子 */
         .prize-img {
-            width: 20px;
-            height: 20px;
-            object-fit: cover;
-            border-radius: 2px;
-            flex-shrink: 0;
+            width: 25px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
-        * {
-            overflow-wrap: break-word;
-            word-wrap: break-word;
+
+        /* 移动端小屏适配 */
+        @media (max-width: 320px) {
+            .grid-container {
+                grid-template-columns: repeat(3, 80px);
+                grid-template-rows: repeat(7, 45px);
+                gap: 6px;
+            }
+            .start-btn {
+                padding: 6px 50px;
+                font-size: 16px;
+            }
+            .title {
+                font-size: 18px;
+                padding: 6px 15px;
+            }
+            .prize-img {
+                width: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 语言切换按钮 -->
     <div class="language-switcher">
         <button class="lang-btn active" id="cnBtn">中文</button>
         <button class="lang-btn" id="enBtn">English</button>
@@ -285,9 +277,9 @@
         <div class="empty"></div>
         <div class="grid-item" data-num="7">？</div>
         <div class="grid-item" data-num="8">？</div>
+        <!-- 装饰图片容器 - 固定位置，不占格子数据 -->
         <div class="image-container">
-            <!-- 核心修改：装饰图路径改为photo/a1.png -->
-            <img src="photo/a1.png" alt="装饰图片" onerror="this.style.display='none'">
+            <img src="photo/a1.png" alt="装饰图片">
         </div>
         <div class="grid-item" data-num="9">？</div>
         <div class="grid-item" data-num="10">？</div>
@@ -306,183 +298,221 @@
     </div>
 
     <script>
-        const CONFIG = {
-            luckyPath: [1,2,3,5,7,9,11,13,16,15,14,12,10,8,6,4,1],
-            flashTimes: 5,
-            flashInterval: 180,
-            showPrizeTime: 2000,
-            rollTime: [1000, 1300],
-            prizeProbability: {
-                "100粉丝": 78,
-                "1000粉丝": 12,
-                "5000粉丝": 6,
-                "10000粉丝": 3,
-                "100000粉丝": 1
+        // ========== 语言配置 - 仅修改英文，中文/阿拉伯文完全不变 ==========
+        const langConfig = {
+            cn: {
+                title: "试试你的运气",
+                startBtn: "开始",
+                shuffleBtn: "洗牌",
+                prizeTop: "获得",
+                prize100Bottom: "100粉丝",
+                prize1000Bottom: "1000粉丝",
+                prize5000Bottom: "5000粉丝",
+                prize10000Bottom: "10000粉丝",
+                prize100000Bottom: "100000粉丝",
+                unknown: "？",
+                clearRecordAlert: "✅ 中奖记录功能已移除！",
+                checkProbabilityAlert: "概率验证完成！请查看控制台日志（按F12打开）",
+                checkProbabilityLog1: "概率验证结果（共",
+                checkProbabilityLog2: "次）：",
+                checkProbabilityLog3: "粉丝：",
+                checkProbabilityLog4: "次 ("
             },
-            shufflePrizePool: [
-                "100粉丝", "100粉丝", "100粉丝", "100粉丝", "100粉丝",
-                "100粉丝", "100粉丝", "1000粉丝", "1000粉丝", "1000粉丝",
-                "5000粉丝", "5000粉丝", "10000粉丝", "10000粉丝", "100000粉丝", "100粉丝"
-            ],
-            prizeColor: {
-                "100粉丝": "black",
-                "1000粉丝": "yellow",
-                "5000粉丝": "orange",
-                "10000粉丝": "blue",
-                "100000粉丝": "red"
+            en: {
+                title: "Try Your Luck",
+                startBtn: "Start",
+                shuffleBtn: "Shuffle",
+                prizeTop: "", // 英文隐藏顶部文字，只显示图片+SEG
+                prize100Bottom: "100 SEG",
+                prize1000Bottom: "1000 SEG",
+                prize5000Bottom: "5000 SEG",
+                prize10000Bottom: "10000 SEG",
+                prize100000Bottom: "100000 SEG",
+                unknown: "?",
+                clearRecordAlert: "✅ Winning record function has been removed!",
+                checkProbabilityAlert: "Probability verification completed! Please check console log (press F12 to open)",
+                checkProbabilityLog1: "Probability verification result (total ",
+                checkProbabilityLog2: " times):",
+                checkProbabilityLog3: " SEG: ",
+                checkProbabilityLog4: " times ("
             },
-            lang: {
-                cn: {
-                    title: "试试你的运气",
-                    start: "开始",
-                    shuffle: "洗牌",
-                    unknown: "？",
-                    prizePrefix: "获得",
-                    prize: {
-                        "100粉丝": "100粉丝",
-                        "1000粉丝": "1000粉丝",
-                        "5000粉丝": "5000粉丝",
-                        "10000粉丝": "10000粉丝",
-                        "100000粉丝": "100000粉丝"
-                    },
-                    tip: {
-                        clearRecord: "✅ 中奖记录功能已移除！",
-                        checkProb: "概率验证完成！请查看控制台日志（按F12打开）",
-                        probLog1: "概率验证结果（共",
-                        probLog2: "次）：",
-                        probLog3: "粉丝：",
-                        probLog4: "次 ("
-                    }
-                },
-                en: {
-                    title: "Try Your Luck",
-                    start: "Start",
-                    shuffle: "Shuffle",
-                    unknown: "?",
-                    prizePrefix: "",
-                    // 英文文字保持xxx SEG a1.png，不变
-                    prize: {
-                        "100粉丝": "100 SEG a1.png",
-                        "1000粉丝": "1000 SEG a1.png",
-                        "5000粉丝": "5000 SEG a1.png",
-                        "10000粉丝": "10000 SEG a1.png",
-                        "100000粉丝": "100000 SEG a1.png"
-                    },
-                    tip: {
-                        clearRecord: "✅ Winning record function has been removed!",
-                        checkProb: "Probability verification completed! Please check console log (press F12 to open)",
-                        probLog1: "Probability verification result (total ",
-                        probLog2: " times):",
-                        probLog3: " SEG a1.png: ",
-                        probLog4: " times ("
-                    }
-                },
-                ar: {
-                    title: "جرب حظك",
-                    start: "ابدأ",
-                    shuffle: "خلط",
-                    unknown: "؟",
-                    prizePrefix: "فوز ",
-                    prize: {
-                        "100粉丝": "100 متابع",
-                        "1000粉丝": "1000 متابع",
-                        "5000粉丝": "5000 متابع",
-                        "10000粉丝": "10000 متابع",
-                        "100000粉丝": "100000 متابع"
-                    },
-                    tip: {
-                        clearRecord: "✅ تم إزالة وظيفة سجل الفوز!",
-                        checkProb: "تم إكمال التحقق من الاحتمالية! يرجى التحقق من سجل وحدة التحكم (اضغط F12 لفتحه)",
-                        probLog1: "نتيجة التحقق من الاحتمالية (مجموع ",
-                        probLog2: " مرة):",
-                        probLog3: " متابع: ",
-                        probLog4: " مرة ("
-                    }
-                }
+            ar: {
+                title: "جرب حظك",
+                startBtn: "ابدأ",
+                shuffleBtn: "خلط",
+                prizeTop: "الفوز",
+                prize100Bottom: "100 متابع",
+                prize1000Bottom: "1000 متابع",
+                prize5000Bottom: "5000 متابع",
+                prize10000Bottom: "10000 متابع",
+                prize100000Bottom: "100000 متابع",
+                unknown: "؟",
+                clearRecordAlert: "✅ تم إزالة وظيفة سجل الفوز!",
+                checkProbabilityAlert: "تم إكمال التحقق من الاحتمالية! يرجى التحقق من سجل وحدة التحكم (اضغط F12 لفتحه)",
+                checkProbabilityLog1: "نتيجة التحقق من الاحتمالية (مجموع ",
+                checkProbabilityLog2: " مرة):",
+                checkProbabilityLog3: " متابع: ",
+                checkProbabilityLog4: " مرة ("
             }
         };
-
+        
+        // 当前语言
         let currentLang = "cn";
-        let isRunning = false;
-        let isShuffleMode = false;
-        let gridPrizeMap = {};
-        const el = {
-            startBtn: document.getElementById('startBtn'),
-            mainTitle: document.getElementById('mainTitle'),
-            cnBtn: document.getElementById('cnBtn'),
-            enBtn: document.getElementById('enBtn'),
-            arBtn: document.getElementById('arBtn'),
-            body: document.body,
-            gridItems: document.querySelectorAll('.grid-item')
+        const body = document.body;
+        
+        // ========== 核心配置项 ==========
+        const luckyPath = [1,2,3,5,7,9,11,13,16,15,14,12,10,8,6,4,1]; // 滚动轨迹
+        const startBtn = document.getElementById('startBtn');
+        const mainTitle = document.getElementById('mainTitle');
+        const cnBtn = document.getElementById('cnBtn');
+        const enBtn = document.getElementById('enBtn');
+        const arBtn = document.getElementById('arBtn');
+        let isRunning = false; // 抽奖状态锁
+        let isShuffleMode = false; // 是否为洗牌模式
+        const FLASH_TIMES = 5; // 滚动中奖闪烁次数
+        const FLASH_INTERVAL = 180; // 闪烁间隔(ms)
+        const SHOW_PRIZE_TIME = 2000; // 洗牌展示奖品时长(ms)
+        
+        // 奖品概率配置（精确控制，总和100%）
+        const PRIZE_PROBABILITY = {
+            "获得100粉丝": 80,    // 80%
+            "获得1000粉丝": 12,   // 12%
+            "获得5000粉丝": 6,    // 6%
+            "获得10000粉丝": 2,   // 2%
+            "获得100000粉丝": 0   // 0%（可自行修改为大于0的数开启）
         };
+        
+        // 奖品基础配置（仅用于洗牌展示，数量对应概率）
+        const prizeConfig = [
+            "获得100粉丝", "获得100粉丝", "获得100粉丝", "获得100粉丝", "获得100粉丝",
+            "获得100粉丝", "获得100粉丝", "获得100粉丝", "获得1000粉丝", "获得1000粉丝",
+            "获得1000粉丝", "获得5000粉丝", "获得5000粉丝", "获得10000粉丝", "获得10000粉丝",
+            "获得100000粉丝"
+        ];
+        
+        // 奖品名称映射 - 仅修改英文，中文/阿拉伯文完全不变
+        const prizeMap = {
+            cn: {
+                "获得100粉丝": "获得100粉丝",
+                "获得1000粉丝": "获得1000粉丝",
+                "获得5000粉丝": "获得5000粉丝",
+                "获得10000粉丝": "获得10000粉丝",
+                "获得100000粉丝": "获得100000粉丝"
+            },
+            en: {
+                "获得100粉丝": "100 SEG",
+                "获得1000粉丝": "1000 SEG",
+                "获得5000粉丝": "5000 SEG",
+                "获得10000粉丝": "10000 SEG",
+                "获得100000粉丝": "100000 SEG"
+            },
+            ar: {
+                "获得100粉丝": "فوز 100 متابع",
+                "获得1000粉丝": "فوز 1000 متابع",
+                "获得5000粉丝": "فوز 5000 متابع",
+                "获得10000粉丝": "فوز 10000 متابع",
+                "获得100000粉丝": "فوز 100000 متابع"
+            }
+        };
+        
+        // 反向映射（用于概率统计/颜色判断，统一中文基准）
+        const reversePrizeMap = {
+            "100 SEG": "获得100粉丝",
+            "1000 SEG": "获得1000粉丝",
+            "5000 SEG": "获得5000粉丝",
+            "10000 SEG": "获得10000粉丝",
+            "100000 SEG": "获得100000粉丝",
+            "فوز 100 متابع": "获得100粉丝",
+            "فوز 1000 متابع": "获得1000粉丝",
+            "فوز 5000 متابع": "获得5000粉丝",
+            "فوز 10000 متابع": "获得10000粉丝",
+            "فوز 100000 متابع": "获得100000粉丝"
+        };
+        
+        // 初始化奖品映射（随机分配，仅用于洗牌展示）
+        let gridPrizeMap = {};
+        initPrizeMap();
 
-        initShufflePrizeMap();
-        bindEvents();
-
-        function initShufflePrizeMap() {
-            const shuffled = [...CONFIG.shufflePrizePool].sort(() => Math.random() - 0.5);
-            el.gridItems.forEach((item, idx) => {
-                gridPrizeMap[item.dataset.num] = shuffled[idx];
-            });
-        }
-
+        // ========== 语言切换功能（新增阿拉伯语排版适配） ==========
         function switchLanguage(lang) {
             if (lang === currentLang) return;
+            
             currentLang = lang;
-            el.body.className = lang;
-            [el.cnBtn, el.enBtn, el.arBtn].forEach(btn => {
-                btn.classList.toggle('active', btn.id === `${lang}Btn`);
+            // 切换body的阿拉伯语样式（rtl排版）
+            body.classList.remove('ar');
+            if (lang === 'ar') body.classList.add('ar');
+            
+            // 更新语言按钮激活状态
+            cnBtn.classList.toggle('active', lang === 'cn');
+            enBtn.classList.toggle('active', lang === 'en');
+            arBtn.classList.toggle('active', lang === 'ar');
+            
+            // 更新页面文本
+            mainTitle.textContent = langConfig[lang].title;
+            startBtn.textContent = isShuffleMode ? langConfig[lang].shuffleBtn : langConfig[lang].startBtn;
+            
+            // 更新所有未开奖格子的问号
+            document.querySelectorAll('.grid-item').forEach(item => {
+                if (!item.classList.contains('flipped') && !item.classList.contains('shuffle-show')) {
+                    item.innerHTML = langConfig[lang].unknown;
+                }
             });
-            el.mainTitle.textContent = CONFIG.lang[lang].title;
-            el.startBtn.textContent = isShuffleMode ? CONFIG.lang[lang].shuffle : CONFIG.lang[lang].start;
-            el.gridItems.forEach(item => {
-                if (/[？?؟]/.test(item.innerHTML)) item.innerHTML = CONFIG.lang[lang].unknown;
-            });
-            document.title = `${CONFIG.lang[currentLang].title} | ${currentLang === 'cn' ? '幸运大抽奖' : currentLang === 'en' ? 'Lucky Draw' : 'السحب الحظي'}`;
+            
+            // 更新页面标题
+            const titles = {
+                cn: '试试你的运气 | 幸运大抽奖',
+                en: 'Try Your Luck | Lucky Draw',
+                ar: 'جرب حظك | السحب الحظي'
+            };
+            document.title = titles[lang];
+        }
+        
+        // 绑定语言切换事件
+        cnBtn.addEventListener('click', () => switchLanguage('cn'));
+        enBtn.addEventListener('click', () => switchLanguage('en'));
+        arBtn.addEventListener('click', () => switchLanguage('ar'));
+
+        // ========== 初始化奖品映射（随机分配，仅用于洗牌展示） ==========
+        function initPrizeMap() {
+            const shuffledPrizes = [...prizeConfig].sort(() => Math.random() - 0.5);
+            for (let i = 1; i <= 16; i++) {
+                gridPrizeMap[i] = shuffledPrizes[i - 1];
+            }
         }
 
+        // ========== 概率抽奖核心函数（精确概率，不受语言影响） ==========
         function getPrizeByProbability() {
-            const pool = [];
-            Object.entries(CONFIG.prizeProbability).forEach(([prize, prob]) => {
-                pool.push(...Array(prob).fill(prize));
+            const prizePool = [];
+            Object.entries(PRIZE_PROBABILITY).forEach(([prize, probability]) => {
+                // 按概率百分比填充奖池，1%对应1个元素
+                for (let i = 0; i < probability; i++) {
+                    prizePool.push(prize);
+                }
             });
-            return pool[Math.floor(Math.random() * pool.length)];
+            // 随机抽取并转换为当前语言
+            const randomIndex = Math.floor(Math.random() * prizePool.length);
+            let prize = prizePool[randomIndex];
+            prize = prizeMap[currentLang][prize] || prize;
+            return prize;
         }
 
-        function getPrizeName(prizeId) {
-            return CONFIG.lang[currentLang].prize[prizeId] || prizeId;
-        }
-
-        function getPrizeColorClass(prizeId) {
-            return `color-${CONFIG.prizeColor[prizeId] || 'black'}`;
-        }
-
-        function generatePrizeHtml(prizeId) {
-            const prefix = CONFIG.lang[currentLang].prizePrefix;
-            const name = getPrizeName(prizeId);
-            // 所有语言仅渲染文字，英文显示xxx SEG a1.png，中/阿文保留原样式
-            const prizeContent = name;
-            return `
-                <div class="prize-text">
-                    ${prefix ? `<span class="prize-top">${prefix}</span>` : ''}
-                    <span class="prize-bottom ${getPrizeColorClass(prizeId)}">${prizeContent}</span>
-                </div>
-            `;
-        }
-
+        // ========== 工具方法 ==========
+        // 根据编号获取格子元素
         function getItemByNum(num) {
             return document.querySelector(`.grid-item[data-num="${num}"]`);
         }
 
+        // 中奖闪烁动画（Promise封装，支持异步等待）
         function flashElement(targetItem, times, interval) {
             return new Promise(resolve => {
-                let count = 0;
-                const timer = setInterval(() => {
-                    targetItem.style.animation = count % 2 === 0 
-                        ? 'flashOnce 0.15s ease-out forwards' : 'none';
-                    count++;
-                    if (count >= times * 2) {
-                        clearInterval(timer);
+                let flashCount = 0;
+                const flashTimer = setInterval(() => {
+                    targetItem.style.animation = flashCount % 2 === 0 
+                        ? 'flashOnce 0.15s ease-out forwards'
+                        : 'none';
+                    flashCount++;
+                    if (flashCount >= times * 2) {
+                        clearInterval(flashTimer);
                         targetItem.style.animation = 'none';
                         resolve();
                     }
@@ -490,114 +520,203 @@
             });
         }
 
-        function resetAllGridItems() {
-            el.gridItems.forEach(item => {
-                item.classList.remove('active', 'win', 'flipped', 'shuffle-show', 
-                    'color-black', 'color-yellow', 'color-orange', 'color-blue', 'color-red');
-                item.style.animation = 'none';
-                item.innerHTML = CONFIG.lang[currentLang].unknown;
-            });
+        // 获取奖品对应的颜色类名（统一中文判断，不受语言影响）
+        function getPrizeColorClass(prize) {
+            let prizeCn = reversePrizeMap[prize] || prize;
+            switch(prizeCn) {
+                case '获得100粉丝': return 'color-black';
+                case '获得1000粉丝': return 'color-yellow';
+                case '获得5000粉丝': return 'color-orange';
+                case '获得10000粉丝': return 'color-blue';
+                case '获得100000粉丝': return 'color-red';
+                default: return 'color-black';
+            }
+        }
+        
+        // 生成奖品HTML - 英文自动添加photo/a2.png图片，中文/阿拉伯文仅文字（完全不变）
+        function generatePrizeHtml(prize) {
+            const config = langConfig[currentLang];
+            let prizeBottom = '';
+            // 根据当前语言和奖品匹配底部文本
+            if (currentLang === 'cn') {
+                prizeBottom = prize.includes('100') ? config.prize100Bottom :
+                              prize.includes('1000') ? config.prize1000Bottom :
+                              prize.includes('5000') ? config.prize5000Bottom :
+                              prize.includes('10000') ? config.prize10000Bottom : config.prize100000Bottom;
+            } else if (currentLang === 'en') {
+                prizeBottom = prize.includes('100 ') ? config.prize100Bottom :
+                              prize.includes('1000 ') ? config.prize1000Bottom :
+                              prize.includes('5000 ') ? config.prize5000Bottom :
+                              prize.includes('10000 ') ? config.prize10000Bottom : config.prize100000Bottom;
+                // 英文：顶部显示a2.png图片，底部显示XXX SEG
+                return `
+                    <div class="prize-text">
+                        <img src="photo/a2.png" class="prize-img" alt="SEG">
+                        <span class="prize-bottom">${prizeBottom}</span>
+                    </div>
+                `;
+            } else if (currentLang === 'ar') {
+                prizeBottom = prize.includes('100') ? config.prize100Bottom :
+                              prize.includes('1000') ? config.prize1000Bottom :
+                              prize.includes('5000') ? config.prize5000Bottom :
+                              prize.includes('10000') ? config.prize10000Bottom : config.prize100000Bottom;
+            }
+            // 中文/阿拉伯文：仅文字（完全保留原样式，无图片）
+            return `
+                <div class="prize-text">
+                    <span class="prize-top">${config.prizeTop}</span>
+                    <span class="prize-bottom">${prizeBottom}</span>
+                </div>
+            `;
         }
 
+        // ========== 洗牌功能核心逻辑（预览所有奖品，后翻回） ==========
         async function shufflePrizes() {
             if (isRunning) return;
             isRunning = true;
-            el.startBtn.disabled = true;
-            resetAllGridItems();
+            startBtn.disabled = true;
 
-            for (const item of el.gridItems) {
-                const prizeId = gridPrizeMap[item.dataset.num];
-                item.classList.add('shuffle-show');
-                item.innerHTML = generatePrizeHtml(prizeId);
+            // 1. 重置所有格子样式
+            document.querySelectorAll('.grid-item').forEach(item => {
+                item.classList.remove('active', 'win', 'flipped', 'color-black', 'color-yellow', 'color-orange', 'color-blue', 'color-red');
+                item.style.animation = 'none';
+            });
+
+            // 2. 逐个翻开格子展示奖品（模拟翻牌动画）
+            const gridItems = document.querySelectorAll('.grid-item');
+            for (let i = 0; i < gridItems.length; i++) {
+                const item = gridItems[i];
+                const num = item.dataset.num;
+                let prize = gridPrizeMap[num];
+                prize = prizeMap[currentLang][prize] || prize;
+                const colorClass = getPrizeColorClass(prize);
+                item.classList.add('shuffle-show', colorClass);
+                item.innerHTML = generatePrizeHtml(prize);
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
 
-            await new Promise(resolve => setTimeout(resolve, CONFIG.showPrizeTime));
-            for (let i = el.gridItems.length - 1; i >= 0; i--) {
-                const item = el.gridItems[i];
-                item.classList.remove('shuffle-show');
-                item.innerHTML = CONFIG.lang[currentLang].unknown;
+            // 3. 展示指定时长后翻回
+            await new Promise(resolve => setTimeout(resolve, SHOW_PRIZE_TIME));
+            
+            // 4. 逐个翻回红色底问号面
+            for (let i = gridItems.length - 1; i >= 0; i--) {
+                const item = gridItems[i];
+                item.classList.remove('shuffle-show', 'color-black', 'color-yellow', 'color-orange', 'color-blue', 'color-red');
+                item.innerHTML = langConfig[currentLang].unknown;
                 await new Promise(resolve => setTimeout(resolve, 80));
             }
 
-            initShufflePrizeMap();
+            // 5. 重新随机分配奖品
+            initPrizeMap();
+
+            // 6. 恢复状态
             isShuffleMode = false;
-            el.startBtn.textContent = CONFIG.lang[currentLang].start;
+            startBtn.textContent = langConfig[currentLang].startBtn;
             isRunning = false;
-            el.startBtn.disabled = false;
+            startBtn.disabled = false;
         }
 
-        async function startLuckyDraw() {
+        // ========== 核心抽奖逻辑（滚动+开奖+闪烁+翻转） ==========
+        startBtn.addEventListener('click', async () => {
+            // 洗牌模式：执行洗牌
+            if (isShuffleMode) {
+                shufflePrizes();
+                return;
+            }
+
+            // 正常抽奖：状态校验
             if (isRunning) return;
             isRunning = true;
-            el.startBtn.disabled = true;
-            resetAllGridItems();
+            startBtn.disabled = true;
 
-            const [minT, maxT] = CONFIG.rollTime;
-            const totalTime = minT + Math.floor(Math.random() * (maxT - minT + 1));
+            // 重置所有格子样式
+            document.querySelectorAll('.grid-item').forEach(item => {
+                item.classList.remove('active', 'win', 'flipped', 'shuffle-show', 'color-black', 'color-yellow', 'color-orange', 'color-blue', 'color-red');
+                item.style.animation = 'none';
+                item.innerHTML = langConfig[currentLang].unknown;
+            });
+
+            // 随机滚动时长（1000-1300ms），增加随机性
+            const totalTime = 1000 + Math.floor(Math.random() * 301);
             const startTime = Date.now();
             let pathIndex = 0;
-            let speed = 10;
+            let speed = 10; // 初始滚动速度
 
+            // 滚动核心函数
             function run() {
-                const passTime = Date.now() - startTime;
+                const now = Date.now();
+                const passTime = now - startTime;
                 const progress = passTime / totalTime;
 
-                getItemByNum(CONFIG.luckyPath[pathIndex])?.classList.remove('active');
-                pathIndex = (pathIndex + 1) % CONFIG.luckyPath.length;
-                const currNum = CONFIG.luckyPath[pathIndex];
+                // 移除上一个高亮，添加当前高亮
+                getItemByNum(luckyPath[pathIndex])?.classList.remove('active');
+                pathIndex = (pathIndex + 1) % luckyPath.length;
+                const currNum = luckyPath[pathIndex];
                 const currItem = getItemByNum(currNum);
                 currItem?.classList.add('active');
 
+                // 速度随进度变慢（越滚越慢，模拟真实抽奖）
                 speed = 10 + progress * 110;
 
+                // 滚动结束，开始开奖
                 if (passTime >= totalTime) {
-                    el.gridItems.forEach(item => item.classList.remove('active'));
+                    // 移除所有高亮，添加中奖闪烁样式
+                    document.querySelectorAll('.grid-item').forEach(item => item.classList.remove('active'));
                     currItem.classList.add('win');
-                    const winPrizeId = getPrizeByProbability();
-                    flashElement(currItem, CONFIG.flashTimes, CONFIG.flashInterval).then(() => {
+                    
+                    // 概率获取中奖奖品
+                    const winPrize = getPrizeByProbability();
+                    
+                    // 闪烁完成后，翻转格子显示奖品（永久闪烁）
+                    flashElement(currItem, FLASH_TIMES, FLASH_INTERVAL).then(() => {
                         currItem.classList.remove('win');
-                        currItem.classList.add('flipped');
-                        currItem.innerHTML = generatePrizeHtml(winPrizeId);
+                        currItem.classList.add('flipped', getPrizeColorClass(winPrize));
+                        currItem.innerHTML = generatePrizeHtml(winPrize);
+                        // 切换为洗牌模式，下次点击可洗牌
                         isShuffleMode = true;
-                        el.startBtn.textContent = CONFIG.lang[currentLang].shuffle;
+                        startBtn.textContent = langConfig[currentLang].shuffleBtn;
+                        // 解锁状态
                         isRunning = false;
-                        el.startBtn.disabled = false;
+                        startBtn.disabled = false;
                     });
                     return;
                 }
-                requestAnimationFrame(() => setTimeout(run, speed));
+                // 继续滚动（结合requestAnimationFrame，更流畅）
+                setTimeout(() => requestAnimationFrame(run), speed);
             }
+            // 启动滚动
             run();
-        }
+        });
 
-        function bindEvents() {
-            el.cnBtn.addEventListener('click', () => switchLanguage('cn'));
-            el.enBtn.addEventListener('click', () => switchLanguage('en'));
-            el.arBtn.addEventListener('click', () => switchLanguage('ar'));
-            el.startBtn.addEventListener('click', () => {
-                isShuffleMode ? shufflePrizes() : startLuckyDraw();
-            });
-        }
-
+        // ========== 调试快捷入口（控制台/页面可调用） ==========
+        // 清空记录（保留兼容）
         window.clearRecord = function() {
-            alert(CONFIG.lang[currentLang].tip.clearRecord);
+            alert(langConfig[currentLang].clearRecordAlert);
         }
+        // 概率验证（默认1万次，可传参如checkProbability(100000)）
         window.checkProbability = function(times = 10000) {
-            const result = Object.keys(CONFIG.prizeProbability).reduce((obj, key) => {
-                obj[key] = 0;
-                return obj;
-            }, {});
+            const result = {
+                "获得100粉丝": 0,
+                "获得1000粉丝": 0,
+                "获得5000粉丝": 0,
+                "获得10000粉丝": 0,
+                "获得100000粉丝": 0
+            };
+            // 模拟抽奖times次
             for(let i=0; i<times; i++) {
-                result[getPrizeByProbability()]++;
+                let prize = getPrizeByProbability();
+                prize = reversePrizeMap[prize] || prize;
+                result[prize]++;
             }
-            console.log(`${CONFIG.lang[currentLang].tip.probLog1}${times}${CONFIG.lang[currentLang].tip.probLog2}`);
-            Object.entries(result).forEach(([prizeId, count]) => {
-                const rate = (count / times * 100).toFixed(2);
-                const prizeName = getPrizeName(prizeId).replace(CONFIG.lang[currentLang].prizePrefix, '');
-                console.log(`${prizeName}${CONFIG.lang[currentLang].tip.probLog3}${count}${CONFIG.lang[currentLang].tip.probLog4}${rate}%)`);
-            });
-            alert(CONFIG.lang[currentLang].tip.checkProb);
+            // 打印控制台日志
+            const config = langConfig[currentLang];
+            console.log(`${config.checkProbabilityLog1}${times}${config.checkProbabilityLog2}`);
+            console.log(`100${config.checkProbabilityLog3}${result["获得100粉丝"]}${config.checkProbabilityLog4}${(result["获得100粉丝"]/times*100).toFixed(2)}%)`);
+            console.log(`1000${config.checkProbabilityLog3}${result["获得1000粉丝"]}${config.checkProbabilityLog4}${(result["获得1000粉丝"]/times*100).toFixed(2)}%)`);
+            console.log(`5000${config.checkProbabilityLog3}${result["获得5000粉丝"]}${config.checkProbabilityLog4}${(result["获得5000粉丝"]/times*100).toFixed(2)}%)`);
+            console.log(`10000${config.checkProbabilityLog3}${result["获得10000粉丝"]}${config.checkProbabilityLog4}${(result["获得10000粉丝"]/times*100).toFixed(2)}%)`);
+            console.log(`100000${config.checkProbabilityLog3}${result["获得100000粉丝"]}${config.checkProbabilityLog4}${(result["获得100000粉丝"]/times*100).toFixed(2)}%)`);
+            alert(config.checkProbabilityAlert);
         }
     </script>
 </body>
