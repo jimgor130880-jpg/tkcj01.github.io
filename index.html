@@ -160,6 +160,12 @@
             align-items: center;
             justify-content: center;
         }
+        /* 新增：奖品文字小2号样式（适配翻转/洗牌展示） */
+        .prize-text {
+            font-size: 12px; /* 比原有默认小2号，可根据需要微调 */
+            line-height: 1.2;
+            text-align: center;
+        }
         /* 不同奖品的文字颜色（保留，兼容特殊情况） */
         .color-black { color: #000000 !important; }
         .color-yellow { color: #FFD900 !important; }
@@ -345,22 +351,22 @@
             "100000 SEG", "100 SEG", "100 SEG"
         ];
         
-        // 奖品图片映射：key是奖品名称，value是对应的图片文件名
+        // 奖品图片映射：key是奖品名称，value是对应的图片文件名【修改1：添加photo/路径前缀】
         const prizeImgMap = {
-            "100 SEG": "100 SEG a1.png",
-            "1000 SEG": "1000 SEG a1.png",
-            "5000 SEG": "5000 SEG a1.png",
-            "10000 SEG": "10000 SEG a1.png",
-            "100000 SEG": "100000 SEG a1.png"
+            "100 SEG": "photo/100 SEG a1.png",
+            "1000 SEG": "photo/1000 SEG a1.png",
+            "5000 SEG": "photo/5000 SEG a1.png",
+            "10000 SEG": "photo/10000 SEG a1.png",
+            "100000 SEG": "photo/100000 SEG a1.png"
         };
         
-        // 反向映射（用于概率统计）
+        // 反向映射（用于概率统计）【修改2：包裹prize-text类实现小2号字体】
         const reversePrizeMap = {
-            "100 SEG": "100 SEG",
-            "1000 SEG": "1000 SEG",
-            "5000 SEG": "5000 SEG",
-            "10000 SEG": "10000 SEG",
-            "100000 SEG": "100000 SEG"
+            "100 SEG": '<span class="prize-text">100 SEG</span>',
+            "1000 SEG": '<span class="prize-text">1000 SEG</span>',
+            "5000 SEG": '<span class="prize-text">5000 SEG</span>',
+            "10000 SEG": '<span class="prize-text">10000 SEG</span>',
+            "100000 SEG": '<span class="prize-text">100000 SEG</span>'
         };
         
         // 初始化奖品映射（随机分配，仅用于洗牌展示）
@@ -586,12 +592,20 @@
                     // 关键修改：使用概率函数获取中奖奖品
                     const winPrize = getPrizeByProbability();
                     
-                    // 闪烁动画后翻转显示奖品图片
+                    // 闪烁动画后翻转显示奖品图片/文字
                     flashElement(currItem, FLASH_TIMES, FLASH_INTERVAL).then(() => {
                         currItem.classList.remove('win');
                         currItem.classList.add('flipped');
-                        // 生成奖品图片（保留角落序号）
-                        currItem.innerHTML = generatePrizeHtml(winPrize, currNum);
+                        // 优先显示图片，若图片加载失败则显示小2号文字
+                        try {
+                            currItem.innerHTML = generatePrizeHtml(winPrize, currNum);
+                            // 图片加载失败时降级为文字
+                            currItem.querySelector('.prize-img').onerror = function() {
+                                this.parentElement.innerHTML = `<span class="grid-num">${currNum}</span>${reversePrizeMap[winPrize]}`;
+                            };
+                        } catch (e) {
+                            currItem.innerHTML = `<span class="grid-num">${currNum}</span>${reversePrizeMap[winPrize]}`;
+                        }
                         
                         // 切换为洗牌模式
                         isShuffleMode = true;
@@ -615,7 +629,7 @@
             alert(langConfig[currentLang].clearRecordAlert);
         }
 
-        // ========== 概率验证工具（适配图片奖品） ==========
+        // ========== 概率验证工具（适配图片奖品+小2号文字） ==========
         window.checkProbability = function(times = 10000) {
             const result = {
                 "100 SEG": 0,
@@ -628,7 +642,7 @@
             for(let i=0; i<times; i++) {
                 let prize = getPrizeByProbability();
                 // 统一转换统计
-                prize = reversePrizeMap[prize] || prize;
+                prize = Object.keys(reversePrizeMap).find(key => reversePrizeMap[key].includes(prize)) || prize;
                 result[prize]++;
             }
             
