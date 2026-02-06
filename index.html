@@ -286,7 +286,8 @@
         <div class="grid-item" data-num="7">？</div>
         <div class="grid-item" data-num="8">？</div>
         <div class="image-container">
-            <img src="a1.png" alt="装饰图片" onerror="this.style.display='none'">
+            <!-- 核心修改：装饰图路径改为photo/a1.png -->
+            <img src="photo/a1.png" alt="装饰图片" onerror="this.style.display='none'">
         </div>
         <div class="grid-item" data-num="9">？</div>
         <div class="grid-item" data-num="10">？</div>
@@ -359,6 +360,7 @@
                     shuffle: "Shuffle",
                     unknown: "?",
                     prizePrefix: "",
+                    // 英文文字保持xxx SEG a1.png，不变
                     prize: {
                         "100粉丝": "100 SEG a1.png",
                         "1000粉丝": "1000 SEG a1.png",
@@ -436,7 +438,7 @@
             el.gridItems.forEach(item => {
                 if (/[？?؟]/.test(item.innerHTML)) item.innerHTML = CONFIG.lang[lang].unknown;
             });
-            document.title = `${CONFIG.lang[lang].title} | ${currentLang === 'cn' ? '幸运大抽奖' : currentLang === 'en' ? 'Lucky Draw' : 'السحب الحظي'}`;
+            document.title = `${CONFIG.lang[currentLang].title} | ${currentLang === 'cn' ? '幸运大抽奖' : currentLang === 'en' ? 'Lucky Draw' : 'السحب الحظي'}`;
         }
 
         function getPrizeByProbability() {
@@ -458,7 +460,7 @@
         function generatePrizeHtml(prizeId) {
             const prefix = CONFIG.lang[currentLang].prizePrefix;
             const name = getPrizeName(prizeId);
-            // 英文仅展示文字，中/阿文保留原样式
+            // 所有语言仅渲染文字，英文显示xxx SEG a1.png，中/阿文保留原样式
             const prizeContent = name;
             return `
                 <div class="prize-text">
